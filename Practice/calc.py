@@ -17,6 +17,15 @@ while cont=="t":
     elif choice=="/":
         result=prevamt/no2
         print("=",result)
+    elif choice=="%":
+        result=prevamt%no2
+        print("=",result)
+    elif choice=="**":
+        result=prevamt**no2
+        print("=",result)
+    elif choice=="//":
+        result=prevamt//no2
+        print("=",result)
     else:
         print("Invalid Operator")
     prevamt=result
