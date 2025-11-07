@@ -38,19 +38,25 @@
 # binary to octal
 # binary -> decimal -> octal ---------------------
 # binary -> decimal:-
-number=1110100
-sum=0; i=0
-while number>0:
-    rem=number%10
-    sum+=rem*pow(2,i)
-    number//=10
-    i+=1
-print(sum)
-# decimal -> octal
-s=0; i=1
-while sum>0:
-    rem=sum%8
-    s= s + (rem*i)
-    sum//=8
-    i*=10
-print(s)
+# number=1110100
+# sum=0; i=0
+# while number>0:
+#     rem=number%10
+#     sum+=rem*pow(2,i)
+#     number//=10
+#     i+=1
+# print(sum)
+# # decimal -> octal
+# s=0; i=1
+# while sum>0:
+#     rem=sum%8
+#     s= s + (rem*i)
+#     sum//=8
+#     i*=10
+# print(s)
+
+
+
+
+
+
