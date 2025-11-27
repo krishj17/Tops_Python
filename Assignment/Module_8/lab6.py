@@ -1,0 +1,5 @@
+fs = open("temp.txt","r")
+print(fs.tell())
+data = fs.readline()
+print(fs.tell())
+fs.close()
