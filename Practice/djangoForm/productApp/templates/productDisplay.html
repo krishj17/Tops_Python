@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product | Display</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Product Category</th>
+            <th>Product Price</th>
+            <th collspan="2">Actions</th>
+        </thead>
+        <tbody>
+            {% for i in productData %}
+                <tr>
+                    <td>{{ i.id }}</td>
+                    <td>{{ i.productName }}</td>
+                    <td>{{ i.productCategory }}</td>
+                    <td>{{ i.productPrice }}</td>
+                    <td><a href="{%url 'updateProduct'%}?productId={{i.id}}">Update</a></td>
+                    <td><a href="{%url 'deleteProduct'%}?productId={{i.id}}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Go to Form page: <a href="{%url 'productForm'%}">Product Form</a></p>
+</body>
+</html>

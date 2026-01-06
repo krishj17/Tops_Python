@@ -1,0 +1,153 @@
+body
+{
+	background:url(https://topsint.com/topserp/images/background.png) repeat-y;
+	background-color:#3879D6;
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+    
+    /*-webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -ms-user-select: none;
+    user-select: none;*/
+}
+.style9 {font-size: 16px; color: #FF0000; }
+.style10 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #000000;
+	font-size:18px;
+}
+.sh:hover
+{
+    background-color: white;
+	cursor:pointer;
+}
+.s:hover
+{
+    background-color: white;
+}
+.ih:hover
+{
+	background-color: #D8D7D7;
+}
+
+.style11 {font-family: Arial, Helvetica, sans-serif}
+.style12 {font-size: 16px; color: #FF0000; font-family: Arial, Helvetica, sans-serif; }
+.style13 {font-size: 20px; font-weight: bold; color: #800000; font-family: Arial, Helvetica, sans-serif; }
+.style18 {font-size: 14px; font-family: Arial, Helvetica, sans-serif;}
+.style19 {font-size: 14px; font-family: Arial, Helvetica, sans-serif; color: #000099; }
+.style20 {font-size: 16px; color:#FF0000}
+.style23 {font-size: 14px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; }
+.style25 {font-size: 14px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #000000; }
+
+#tablebrd
+{
+border:#000000 2px solid;
+
+}
+
+.sz
+{
+	color:#4D5974;
+	font-size:10px;
+}
+.err
+{
+	color:#FF0000;
+	font-size:10px;
+}
+
+.content
+{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#666666;
+font-weight:bold;
+}
+
+.content2
+{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#666666;
+font-weight:none;
+}
+
+.bcontent
+{
+font-family:Tahoma Verdana, Arial, Helvetica, sans-serif;
+font-size:18px;
+color:#666666;
+font-weight:bold;
+}
+
+.wcontent
+{
+font-family:Tahoma Verdana, Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#FFFFFF;
+font-weight:bold;
+text-align:center;
+}
+
+.lpad
+{
+	padding-left:10px;
+	
+}
+
+.footer
+{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:11px;
+color:#FFF;
+font-weight:none;
+}
+
+
+.field1 
+{
+	padding:2px;
+	width:120px;
+	height:15px;
+	border:solid 1px #666666;
+	font-size:11px;
+}
+
+#button1 {
+	background:#ECEBE6; 
+	color:#fff;
+	padding:2px 5px;	
+}
+
+#selfield1
+{
+width:140px;
+font-size:12px;
+}
+
+#selfield2
+{
+width:120px;
+font-size:12px;
+}
+
+
+.col_border
+{
+    border: 1px solid #3879D6;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+.col_border legend
+{
+    background: White;
+    border: solid 1px black;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+	padding: 3px 1px;
+}

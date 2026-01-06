@@ -1,0 +1,21 @@
+{%load static%}  <!-- load static files like css and js -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">  <!-- static files path -->
+    <title>{% block title %}Django Layout{% endblock title %}</title>
+</head>
+<body>
+    <nav> 
+        <a href="{%url 'index'%}">Home</a> | 
+        <a href="{%url 'about' %}">About</a> |
+        <a href="{%url 'contact' %}">Contact</a> |
+        <a href="{%url 'help' %}">Help</a>
+        <p id="jsLoad">Js Not Loaded</p>
+        {% block body %}{% endblock body %}
+    </nav>
+</body>
+<script src="{% static '/js/script.js' %}"></script>
+</html>

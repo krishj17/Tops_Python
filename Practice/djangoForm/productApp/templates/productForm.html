@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product | Form</title>
+</head>
+<body>
+    <form action="{%url 'addProduct'%}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value={{productData.id}}>
+        <input type="text" name="name" placeholder="Product name" value={{productData.productName}}>
+        <input type="text" name="category" placeholder="Product category" value={{productData.productCategory}}>
+        <input type="number" name="price" placeholder="price" value={{productData.productPrice}}>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </form>
+    <br>
+    {{message}}
+    <br>
+    <p>Go to Display page: <a href="{%url 'productDisplay'%}">Product Display</a></p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display</title>
+</head>
+<body>
+
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Age</th>
+            <th collspan="2">Actions</th>
+        </thead>
+        <tbody>
+            {% for i in data %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.phone}}</td>
+                    <td>{{i.age}}</td>
+                    <td><a href="{%url 'update'%}?id={{i.id}}">Update</a></td>  <!-- appending id as params to route -->
+                    <td><a href="{%url 'delete'%}?id={{i.id}}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{%url 'index'%}">Go Back To Registration</a>
+</body>
+</html>

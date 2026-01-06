@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{%load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <title>Display</title>
+</head>
+<body>
+    <nav>
+        <a href="{%url 'index'%}">Home</a>
+    </nav>
+    <hr>
+    <table>
+        <h3>Department</h3>
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th colspan="2">Actions</th>
+        </thead>
+        <tbody>
+            {% for i in departData %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.departName}}</td>
+                    <td><a href="{%url 'updateDepart'%}?id={{i.id}}">Update</a></td>
+                    <td><a href="{%url 'removeDepart'%}?id={{i.id}}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <table>
+        <h3>Employee</h3>
+        <thead>
+            <th>Id</th>
+            <th>empName</th>
+            <th>empImage</th>
+            <th>empDepart</th>
+            <th>empAge</th>
+            <th>empSalary</th>
+            <th colspan='2'>Actions</th>
+        </thead>
+        <tbody>
+            {% for i in empData %}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.empName}}</td>
+                    <td><img src="media/{{i.empImage}}" alt="not found"></td>
+                    <td>{{i.empDepart}}</td>
+                    <td>{{i.empAge}}</td>
+                    <td>{{i.empSalary}}</td>
+                    <td><a href="{%url 'updateEmp'%}?id={{i.id}}">Update</a></td>
+                    <td><a href="{%url 'deleteEmp'%}?id={{i.id}}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

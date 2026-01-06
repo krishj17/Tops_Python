@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    <nav>
+        <a href="{%url 'display'%}">Display</a>
+    </nav>
+    <hr>
+    <h1>index</h1>
+    <form action="{%url 'addproduct'%}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="productId" value="{{prodObj.id}}">
+        <h3>Product add form:</h3>
+        <input type="text" name="productName" placeholder="Enter product name" value="{{prodObj.productName}}">
+        <input type="number" name="productQty" placeholder="Enter product qty" value="{{prodObj.productQty}}">
+        <input type="number" name="productPrice" placeholder="Enter product price" value="{{prodObj.productPrice}}">
+        <select name="productCategory">
+            {% for i in CategoryData %}
+                <option value="{{i.id}}" {%if i.CategoryName == prodObj.productCategory.CategoryName%} selected {%endif%}>{{i.CategoryName}}</option>
+            {% endfor %}
+        </select>
+        {%if prodObj.productImage%}
+            <img src="{{prodObj.productImage.url}}" alt="prodObj.productImage" height="100px">
+            <input type="hidden" name="currImage" value={{prodObj.productImage.url}}> 
+        {%endif%} 
+        <input type="file" name="image" >
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </form>
+
+    <form action="" method="post">
+        <h3>Category add form:</h3>
+        <input type="text" placeholder="Enter Category name">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </form> 
+</body>
+</html>

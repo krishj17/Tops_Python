@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <title>Index</title>
+</head>
+<body>
+    <nav>
+        <a href="{%url 'display'%}">Display</a>
+    </nav>
+    <hr>
+
+    <h1>Index Page</h1>
+
+    <!-- Department Form -->
+    <form action="{%url 'addDepart'%}" method="post">
+        {% csrf_token %}
+        <h3>Add Department: </h3>
+        <input type="hidden" name='Did' value={{DepartData.id}}>
+        <input type="text" placeholder="Department Name" name="Dname" value={{DepartData.departName}}>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <hr>
+
+    <!-- Employee Form -->
+    <form action="{%url 'addEmp'%}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Add Employee: </h3>
+        
+        <input type="hidden" name="Eid" value={{empData.id}}>
+        <input type="text" name="Ename" placeholder="Employee Name" value={{empData.empName}}>
+
+        {% if empData.empImage %}
+            <p>Current Image:</p>
+            <img src="{{ empData.empImage.url }}" alt="Employee Image" width="100">
+        {% endif %}
+        <!-- The input remains empty by default -->
+        <input type="file" name="Eimage">
+
+        <select name="Edepart">
+            {% for i in allDepartData %}
+                <option value="{{i.id}}" {% if empData.empDepart == i %}selected{% endif %}>
+                    {{i.departName}}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="number" name="Eage" placeholder="Employee Age" value={{empData.empAge}}>
+        <input type="number" name="Esalary" placeholder="Employee Salary" value={{empData.empSalary}}>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- preview message -->
+    <p>{{message}}</p>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax App</title>
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous">
+    </script>
+    
+</head>
+<body>
+    
+    <input id="textbox" type="text" onkeyup="send()">
+    <button id="submit" onclick="send()">Submit</button>
+    <div id="preview"></div>
+
+</body>
+<script>
+    function send(){
+        var data = $("#textbox").val()
+        $.get(
+            'register',
+            {data},
+            function (response){
+                var list = "<ul>"
+                response.products.map((el)=>{
+                    list+=`<li>${el.name}</li>`
+                })
+
+                list += "</ul>"
+                $("#preview").html(list)
+            }
+        ) 
+    }
+</script>   
+</html>

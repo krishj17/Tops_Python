@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display</title>
+</head>
+<body>
+    <nav>
+        <a href="{%url 'index'%}">Form</a>
+    </nav>
+    <hr>
+    <table>
+        <thead>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Product Category</th>
+            <th>Product Qty</th>
+            <th>Product Price</th>
+            <th>Product Image</th>
+            <th colspan="2">Action</th>
+        </thead>
+        <tbody>
+            {% for p in productData %}
+                <tr>
+                    <td>{{p.id}}</td>
+                    <td>{{p.productName}}</td>
+                    <td>{{p.productCategory}}</td>
+                    <td>{{p.productQty}}</td>
+                    <td>{{p.productPrice}}</td>
+                    <td><img src="media/{{p.productImage}}" alt="N/A" height="100px"></td>
+                    <td><a href="{%url 'updateProduct'%}?prodId={{p.id}}">Update</a></td>
+                    <td><a href="{%url 'deleteProduct'%}?prodId={{p.id}}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

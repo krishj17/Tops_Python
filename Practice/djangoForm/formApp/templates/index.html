@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+</head>
+<body>
+    
+    <form action="/register" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value={{sData.id}}> <!-- here vlaue used to populate data when updated -->
+        <input type="text" name="userName" placeholder="Enter User name" value={{sData.name}}>
+        <input type="text" name="userEmail" placeholder="Enter User email" value={{sData.email}}>
+        <input type="text" name="userPhone" placeholder="Enter User phone no" value={{sData.phone}}>
+        <input type="text" name="userAge" placeholder="Enter User Age" value={{sData.age}}>
+        <input type="submit">
+        <input type="reset">
+        {{message}}
+    </form>
+    <a href="{%url 'display'%}">Display Data</a>
+
+
+</body>
+</html>
