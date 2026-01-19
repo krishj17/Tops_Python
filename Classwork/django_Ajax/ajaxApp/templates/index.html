@@ -11,15 +11,49 @@
     </script>
     
 </head>
-<body>
-    
-    <input id="textbox" type="text" onkeyup="send()">
+<body>    
+    {% comment %} <input id="textbox" type="text" onkeyup="send()">
     <button id="submit" onclick="send()">Submit</button>
-    <div id="preview"></div>
+    <div id="preview"></div> {% endcomment %}
 
+    <select name="country" id="country" onchange='getState(value)'></select>
+    <select name="state" id="state" onchange='getCity(value)'></select>
+    <select name="city" id="city"></select>
 </body>
 <script>
-    function send(){
+    $(document).ready(function (){
+        $.get("country", {}, function(response){
+            options = "";
+            for(country of response.countries){
+                options += `<option value="${country.id}">${country.countryName}</option>`
+            };
+            $("#country").html(options);   
+        });
+    });
+
+    function getState(countryId){
+        $.get("state", {countryId}, function(response){
+            options = "";
+            for(state of response.states){
+                options += `<option value="${state.id}">${state.stateName}</option>`
+            };
+            $("#state").html(options);
+        });
+    };
+
+    function getCity(stateId){
+        $.get("city", {stateId}, function(response){
+            options = "";
+            for(city of response.cities){
+                options += `<option value="${city.id}">${city.cityName}</option>`
+            };
+            $("#city").html(options);  
+        });
+    };
+
+    // -----------------------------------------------------------
+
+    {% comment %} function send(){
         var data = $("#textbox").val()
         $.get(
             'register',
@@ -34,6 +68,6 @@
                 $("#preview").html(list)
             }
         ) 
-    }
+    }  {% endcomment %}
 </script>   
 </html>

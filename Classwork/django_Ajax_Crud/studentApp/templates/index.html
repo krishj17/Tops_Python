@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Ajax CRUD</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form>
+        {% csrf_token %}
+        <input type="hidden" name="id" id="sid">
+        <input type="text" name="sname" id="sname" placeholder="name">
+        <input type="number" name="sage" id="sage" placeholder="age">
+        <input type="number" name="sphone" id="sphone" placeholder="phone no">
+        <button type="button" onclick="addStudent()" id="submitBtn">Submit</button>
+        <button type="button" onclick="updateStudent()" id="updateBtn">Update</button>
+    </form>
+    <br><hr><br>
+    <table style="gap: 2rem;">
+        <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Phone</th>
+            <th colspan="2">Actions</th>
+        </thead>
+        <tbody id="loadContainer">
+            
+        </tbody>
+    </table>
+</body>
+<script>
+    $(document).ready( function (){
+        getStudent()
+        $("#updateBtn").hide()
+    });
+
+    function addStudent(){
+        const sname = $("#sname").val();
+        const sage = $("#sage").val();
+        const sphone = $("#sphone").val();
+        const csrfToken = $("[name='csrfmiddlewaretoken']").val();
+
+        $.post("addstudent", {
+            csrfmiddlewaretoken: csrfToken, 
+            sname: sname, 
+            sage: sage, 
+            sphone: sphone
+        }, 
+        function (response){
+            alert(response.message)
+            $("#sname").val("");
+            $("#sage").val("");
+            $("#sphone").val("");
+            getStudent();
+        });
+    };
+
+    function getStudent(){
+        // $("#loadContainer").html("");
+        $.get("getstudent", {}, function (response){
+            html = "";
+            response.studentData.forEach(element => {
+                html += `
+                    <tr>
+                        <td>${element.id}</td>
+                        <td>${element.sName}</td>
+                        <td>${element.sAge}</td>
+                        <td>${element.sPhone}</td>
+                        <td><button onclick="loadStudent(${element.id})">Update</button></td>
+                        <td><button onclick="deleteStudent(${element.id})">Delete</button></td>
+                    </tr>
+                `;
+            });
+            $("#loadContainer").html(html)
+        });
+    };
+
+    function deleteStudent(id){
+        $.get("deletestudent", {studentId: id}, function (response){
+            alert(response.message);
+            getStudent();
+        });
+    };
+
+    function loadStudent(id){
+        $.get("loadStudent", {studentId: id}, function (response){
+            studentData = response.studentData
+            $("#sname").val(studentData.sName);
+            $("#sage").val(studentData.sAge);
+            $("#sphone").val(studentData.sPhone);
+            $("#sid").val(studentData.id);
+            $("submitBtn").hide()
+            $("#updateBtn").show()
+        })
+    }
+
+    function updateStudent(){
+
+    }
+</script>
+</html>
