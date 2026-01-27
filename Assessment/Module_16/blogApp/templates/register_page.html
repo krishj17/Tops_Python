@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+
+{% block title %}WriteSphere | Register{% endblock title %}
+
+{% block main %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4 fw-bold">Create Account</h3>
+                    <div>
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" id="usernameBox" class="form-control" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="emailBox" class="form-control" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="text" id="passwordBox" class="form-control" required>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="mb-3">
+                            <label class="form-label">Register as</label>
+                            <select id="roleSelect" class="form-select" required>
+                                <option value="">Select role</option>
+                                <option value="author">Author</option>
+                                <option value="reader">Reader</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-grid">
+                            <button type="button" id="registerBtn" class="btn btn-dark">Register</button>
+                        </div>
+                    </div>
+
+                    <p class="text-center mt-3 mb-0"> 
+                        Already have an account?
+                        <a href="{% url 'login' %}">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.querySelector("#registerBtn").addEventListener("click", async () => {
+        const usernameBox = document.querySelector("#usernameBox");
+        const emailBox = document.querySelector("#emailBox");
+        const passwordBox = document.querySelector("#passwordBox");
+        const roleSelect = document.querySelector("#roleSelect");
+        const csrf_token = '{{csrf_token}}';
+
+        console.log(usernameBox.value, emailBox.value, passwordBox.value, roleSelect.value, csrf_token);
+        if(usernameBox.value=="" || emailBox.value=="" || passwordBox.value=="" || roleSelect.value==""){
+            return alert("Please provide all user details!");
+        };
+        const data = new FormData()
+        data.append("csrfmiddlewaretoken", csrf_token);
+        data.append("username", usernameBox.value);
+        data.append("email", emailBox.value);
+        data.append("password", passwordBox.value);
+        data.append("role", roleSelect.value);
+
+        const response = await fetch("{% url 'register-user' %}", {
+            method: "POST",
+            body: data
+        });
+        const rdata = await response.json();
+        console.log(rdata);
+        if(rdata.status=="success"){
+            alert(rdata.message);
+            usernameBox.value="";
+            emailBox.value="";
+            passwordBox.value="";
+            roleSelect.value="";
+            window.location.href="/login";
+        }
+    });
+</script>
+{% endblock script %}

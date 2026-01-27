@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}WriteSphere | Login{% endblock title %}
+
+{% block main %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4 fw-bold">Login</h3>
+                    <div>
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" id="usernameBox" class="form-control" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" id="passwordBox" class="form-control" required>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-grid">
+                            <button type="button" id="loginBtn" class="btn btn-dark">Login</button>
+                        </div>
+                    </div>
+
+                    <p class="text-center mt-3 mb-0">
+                        Don't have an account?
+                        <a href="{% url 'register' %}">Register</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    document.querySelector("#loginBtn").addEventListener("click", async () => {
+        const usernameBox = document.querySelector("#usernameBox");
+        const passwordBox = document.querySelector("#passwordBox");
+        const csrf_token = '{{csrf_token}}';
+
+        console.log(usernameBox.value, passwordBox.value, csrf_token);
+        if(usernameBox.value=="" || passwordBox.value==""){
+            return alert("Please provide all user details!");
+        };
+        const data = new FormData()
+        data.append("csrfmiddlewaretoken", csrf_token);
+        data.append("username", usernameBox.value);
+        data.append("password", passwordBox.value);
+
+        const response = await fetch("{% url 'login-user' %}", {
+            method: "POST",
+            body: data
+        });
+        const rdata = await response.json();
+        console.log(rdata);
+        if(rdata.status=="success"){
+            alert(rdata.message);
+            usernameBox.value="";
+            passwordBox.value="";
+            window.location.href="/dashboard";
+        };
+    });
+</script>
+{% endblock script %}

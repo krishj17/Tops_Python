@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}WriteSphere | Blogs{% endblock title %}
+
+{% block main %}
+<div class="container my-5">
+    <div class="mb-4">
+        <h2 class="fw-bold">All Stories</h2>
+        <p class="text-muted">Explore all posts available on our platform.</p>
+    </div>
+   
+    <div class="row g-4">
+        {% for blog in blogs %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0">
+                    {% if blog.coverImage %}
+                        <img src="{{ blog.coverImage.url }}" class="card-img-top" alt="cover image">
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="badge bg-primary-subtle text-primary">{{ blog.category.name }}</span>
+                            <small class="text-muted ms-2">{{ blog.createdAt }}</small>
+                        </div>
+                        <h5 class="card-title fw-bold">{{ blog.title }}</h5>
+                        <p class="card-text text-muted">{{ blog.body|truncatewords:25 }}</p>
+                        <a href="{% url 'blog' slug=blog.slug %}" class="btn btn-sm btn-outline-dark mt-auto">View Full Story</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No stories found.</p>
+            </div>
+        {% endfor %} 
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-center align-items-center gap-3 mt-5">
+        {% if blogs.has_previous %}
+            <a href="?page={{ blogs.previous_page_number }}" class="btn btn-outline-dark">Previous</a>
+        {% else %}
+            <button class="btn btn-outline-secondary" disabled>Previous</button>
+        {% endif %}
+
+        <span class="fw-bold">Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}</span>
+
+        {% if blogs.has_next %}
+            <a href="?page={{ blogs.next_page_number }}" class="btn btn-outline-dark">Next</a>
+        {% else %}
+            <button class="btn btn-outline-secondary" disabled>Next</button>
+        {% endif %} 
+    </div>
+</div>
+{% endblock main %}

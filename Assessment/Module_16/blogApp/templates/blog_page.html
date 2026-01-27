@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+
+{% block title %}WriteSphere | Blog{% endblock title %}
+
+{% block main %}
+<div class="container">
+    <!-- Blog Title, Category and Date -->
+    <div class="py-4">
+        <h1 class="fw-bold">{{ post.title }}</h1>
+        <div class="d-flex align-items-center mb-3">
+            <span class="badge bg-primary-subtle text-primary me-2">{{ post.category.name }}</span>
+            <small class="text-muted">{{ post.createdAt }}</small>
+        </div>
+    </div>
+
+    <!-- Blog Image -->
+    {% if post.coverImage %}
+        <div class="mb-4 text-center">
+            <img src="{{ post.coverImage.url }}" class="img-fluid rounded shadow-sm" alt="cover image">
+        </div>
+    {% endif %}
+
+    <!-- Blog Content/Body -->
+    <div class="mb-5">
+        <p class="fs-5">{{ post.body|linebreaks }}</p>
+    </div>
+
+    <!-- Like & Share Button -->
+    <div class="mb-4 d-flex gap-3">
+        {% if user_has_like %}
+            <button id="likeBtn" class="btn btn-danger">
+                <i class="bi bi-hand-thumbs-up-fill"></i> {{ like_count }}   
+            </button>  
+        {% else %}
+            <button id="likeBtn" class="btn btn-outline-danger">
+                <i class="bi bi-hand-thumbs-up"></i> {{ like_count }}   
+            </button>  
+        {% endif %}
+        <a href="#" class="btn btn-outline-primary">
+            <i class="bi bi-share"></i> Share
+        </a>
+    </div>
+
+    <!-- Comment Section -->
+    <h4 id="commentsTotal" class="mb-3">Comments ({{ comments|length }})</h4>
+
+    {% if user.is_authenticated %}
+        {% if user_has_commented %}
+            <p>Already commented</p>
+            <button id="commentDeleteBtn" type="button" name="delete_submit" class="btn btn-danger">Delete Comment</button>
+        {% else %}
+            <div id="commentInputSection">
+                <textarea id="commentBox" name="comment" class="form-control mb-2" rows="3" placeholder="Write your comment..."></textarea>
+                <button id="commentBtn" type="button" name="comment_submit" class="btn btn-dark">Post Comment</button>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-light">
+            <a href="{% url 'login' %}">Login</a> to write a comment.
+        </div>
+    {% endif %}
+
+    <!-- Comments List -->
+    <div id="commentList">
+        {% for comment in comments %}
+            <div class="border rounded p-3">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ comment.user.username }}</strong>
+                    <small class="text-muted">
+                        {{ comment.createdAt }}
+                    </small>
+                </div>
+                <p class="mt-2 mb-0">{{ comment.comment }}</p>
+            </div>
+        {% empty %}
+            <p class="text-muted">No comments yet. Be the first!</p>
+        {% endfor %}
+    </div>
+    <!-- Optional: Related Posts -->
+    {% if relatedBlogs %}
+        <h4 class="mb-3">Related Stories</h4>
+        <div class="row g-4">
+            {% for post in relatedBlogs %}
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        {% if post.coverImage %}
+                            <img src="{{ post.coverImage.url }}" class="card-img-top" alt="cover">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.body|truncatewords:20 }}</p>
+                            <a href="{% url 'blog' slug=post.slug %}" class="btn btn-sm btn-outline-dark">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock main %}
+
+{% block script %}
+<script>
+    const user = '{{user}}';
+    const post = '{{post}}';
+    const csrf_token = '{{csrf_token}}'
+    const likeBtn = document.querySelector("#likeBtn");
+
+    likeBtn.addEventListener("click", async ()=>{
+        // continue if user is in session
+        if("{{ user.is_authenticated }}" === "False"){ 
+            return alert("Please Login to give a Like!");
+        }
+
+        const data = new FormData()
+        data.append("csrfmiddlewaretoken", '{{csrf_token}}');
+        data.append("postId", '{{post.id}}');
+        
+        const response = await fetch("{% url 'like-post' %}", {
+            method: "POST",
+            body: data
+        });
+        const rdata = await response.json();
+      
+        if(rdata.operation=="add"){  // if like is added:
+            likeBtn.classList.replace("btn-outline-danger","btn-danger")
+            likeBtn.innerHTML = ` <i class="bi bi-hand-thumbs-up-fill"></i> ${parseInt(likeBtn.innerText)+1}`;
+        } else {  // i like is removed:
+            likeBtn.classList.replace("btn-danger","btn-outline-danger")
+            likeBtn.innerHTML = ` <i class="bi bi-hand-thumbs-up"></i> ${parseInt(likeBtn.innerText)-1}`;
+        }
+    })
+
+    const commentBox = document.querySelector("#commentBtn")
+    if (commentBox){
+        commentBox.addEventListener("click", async ()=>{
+            const comment = document.querySelector("#commentBox").value;
+
+            if('{{user.is_authenticated}}' === "False"){
+                return alert("User not Authenticated. Please Sign In!");
+            };
+
+            const data = new FormData();
+            data.append("csrfmiddlewaretoken", csrf_token);
+            data.append("postId", "{{post.id}}");
+            data.append("comment", comment);
+
+            const response = await fetch("{% url 'post-comment' %}", {
+                method: "POST",
+                body: data
+            });
+            const rdata = await response.json();
+            if(rdata.status=="success"){
+                let str = ""
+                for(const com of rdata.comments){
+                    str += `
+                        <div class="border rounded p-3">
+                            <div class="d-flex justify-content-between">
+                                <strong>${com.user.username}</strong>
+                                <small class="text-muted">
+                                    ${com.createdAt}
+                                </small>
+                            </div>
+                            <p class="mt-2 mb-0">${com.comment}</p>
+                        </div>
+                    `;
+                }
+                const commentList = document.querySelector("#commentList")
+                commentList.innerHTML = str;
+                document.querySelector("#commentsTotal").innerHTML= `Comments (${rdata.comments.length})`
+            };
+        });
+    };
+    
+
+    // commentInputSection
+</script>
+{% endblock script %}
